@@ -2,7 +2,6 @@
 session_start();
 require_once 'db.php';
 
-<<<<<<< HEAD
 // Nếu đã đăng nhập rồi thì redirect luôn
 if (isset($_SESSION['role'])) {
     switch ($_SESSION['role']) {
@@ -66,7 +65,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         if (isset($stmt) && $stmt) $stmt->close();
-=======
 error_reporting(E_ALL); ini_set('display_errors', 1);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -99,7 +97,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     } else {
         $error = "Tài khoản không tồn tại trong bảng users!";
->>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
     }
 }
 ?>
