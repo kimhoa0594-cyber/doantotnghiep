@@ -28,8 +28,13 @@ $conn->query("CREATE TABLE IF NOT EXISTS `ky_thuat_vien` (
 // ĐỒNG BỘ từ nhan_vien & users
 // ================================================================
 $sync = $conn->query("SELECT n.tenNV, n.email, n.ngayVaoLam FROM nhan_vien n
+<<<<<<< HEAD
     WHERE n.chucVu = 'Kỹ thuật viên' COLLATE utf8mb4_unicode_ci AND n.trangThai = 1
     AND n.email COLLATE utf8mb4_unicode_ci NOT IN (SELECT COALESCE(email COLLATE utf8mb4_unicode_ci,'') FROM ky_thuat_vien)");
+=======
+    WHERE n.chucVu = 'Kỹ thuật viên' AND n.trangThai = 1
+    AND n.email NOT IN (SELECT COALESCE(email,'') FROM ky_thuat_vien)");
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
 if ($sync && $sync->num_rows > 0) {
     while ($s = $sync->fetch_assoc()) {
         $ins = $conn->prepare("INSERT INTO ky_thuat_vien (tenKTV, email, ngayTaoTK, trangThai) VALUES (?,?,?,1)");
@@ -39,7 +44,11 @@ if ($sync && $sync->num_rows > 0) {
 }
 $syncU = $conn->query("SELECT u.username, u.email, DATE(u.created_at) AS cdate FROM users u
     WHERE u.role='technician' AND u.status=1
+<<<<<<< HEAD
     AND u.email COLLATE utf8mb4_unicode_ci NOT IN (SELECT COALESCE(email COLLATE utf8mb4_unicode_ci,'') FROM ky_thuat_vien)");
+=======
+    AND u.email NOT IN (SELECT COALESCE(email,'') FROM ky_thuat_vien)");
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
 if ($syncU && $syncU->num_rows > 0) {
     while ($s = $syncU->fetch_assoc()) {
         $ins = $conn->prepare("INSERT INTO ky_thuat_vien (tenKTV, email, ngayTaoTK, trangThai) VALUES (?,?,?,1)");

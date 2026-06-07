@@ -72,6 +72,7 @@ if($conn){
  *  - Bắt đầu bằng "/"           → giữ nguyên (path tuyệt đối server)
  *  - Còn lại                     → thêm "admin/" phía trước
  */
+<<<<<<< HEAD
 /**
  * Chuẩn hoá đường dẫn ảnh từ admin sang gốc dự án.
  *
@@ -86,11 +87,14 @@ if($conn){
  *  - Bắt đầu bằng "/"                  → giữ nguyên
  *  - Còn lại                            → giữ nguyên (không thêm prefix bừa)
  */
+=======
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
 function fixAdminImgPath(string $src): string {
     $src = trim($src);
     if ($src === '') return '';
     // URL tuyệt đối
     if (str_starts_with($src, 'http://') || str_starts_with($src, 'https://')) return $src;
+<<<<<<< HEAD
     // Đã đúng: images/ ở root
     if (str_starts_with($src, 'images/')) return $src;
     // admin/images/ → images/
@@ -101,6 +105,14 @@ function fixAdminImgPath(string $src): string {
     if (str_starts_with($src, '/')) return $src;
     // Còn lại: giữ nguyên
     return $src;
+=======
+    // Đã có tiền tố admin/
+    if (str_starts_with($src, 'admin/')) return $src;
+    // Path tuyệt đối server
+    if (str_starts_with($src, '/')) return $src;
+    // Các đường dẫn tương đối khác → thêm admin/
+    return 'admin/' . $src;
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
 }
 
 /**
@@ -111,6 +123,7 @@ function fixAdminImgPaths(array $imgs): array {
 }
 
 /**
+<<<<<<< HEAD
  * Dọn sạch nội dung TinyMCE:
  * - Xóa \r\n và \\r\\n literal (không phải newline thật) xuất hiện do escape không đúng
  * - Fix ảnh
@@ -125,6 +138,8 @@ function cleanTinyMCEContent(string $html): string {
 }
 
 /**
+=======
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
  * Sửa src của tất cả <img> bên trong nội dung HTML từ admin.
  */
 function fixAdminContentImgs(string $html): string {
@@ -132,16 +147,24 @@ function fixAdminContentImgs(string $html): string {
     $result = preg_replace_callback(
         '/<img([^>]+)src=["\']([^"\']+)["\']([^>]*)>/i',
         function($m) {
+<<<<<<< HEAD
             $src = $m[2];
             // data:image → nhúng thẳng, giữ nguyên không cần fix path
             if (str_starts_with($src, 'data:image')) {
                 return $m[0];
             }
             $fixed = fixAdminImgPath($src);
+=======
+            $fixed = fixAdminImgPath($m[2]);
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
             return '<img' . $m[1] . 'src="' . htmlspecialchars($fixed, ENT_QUOTES) . '"' . $m[3] . '>';
         },
         $html
     );
+<<<<<<< HEAD
+=======
+    // preg_replace_callback trả null khi lỗi → fallback về html gốc
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
     return $result ?? $html;
 }
 
@@ -150,7 +173,10 @@ $ads_products  = [];
 if($conn){
     $at = $conn->query("SHOW TABLES LIKE 'ads'");
     if($at && $at->num_rows > 0){
+<<<<<<< HEAD
         $conn->query("SET NAMES 'utf8mb4'");
+=======
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
         $ra = $conn->query("SELECT * FROM ads WHERE status='published' ORDER BY id DESC LIMIT 20");
         if($ra) while($row = $ra->fetch_assoc()){
             // Fix đường dẫn ảnh đơn
@@ -164,9 +190,14 @@ if($conn){
                     $row['images_json'] = json_encode(fixAdminImgPaths($decoded), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
                 }
             }
+<<<<<<< HEAD
             // Fix ảnh bên trong nội dung HTML (TinyMCE) + dọn \r\n literal
             if (!empty($row['content'])) {
                 $row['content'] = cleanTinyMCEContent($row['content']);
+=======
+            // Fix ảnh bên trong nội dung HTML (TinyMCE)
+            if (!empty($row['content'])) {
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
                 $row['content'] = fixAdminContentImgs($row['content']);
             }
 
@@ -863,7 +894,10 @@ button,input{font-family:inherit;}
     background:var(--gll);border-radius:9px;padding:8px 12px;
     border-left:3px solid var(--g3);
 }
+<<<<<<< HEAD
 .pd-warranty-note{
+=======
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
     display:flex;align-items:center;gap:10px;
     background:var(--gll);border-radius:10px;padding:10px 14px;margin-top:14px;
     font-size:12px;color:var(--g2);font-weight:700;
@@ -1758,6 +1792,7 @@ button,input{font-family:inherit;}
                     $ap_thumb = !empty($ap_all_imgs) ? $ap_all_imgs[0] : '';
 
                     // Nội dung HTML đầy đủ để truyền vào modal (base64 safe)
+<<<<<<< HEAD
                     // $ap['content'] đã được fixAdminContentImgs() xử lý ở vòng lặp query
                     // Đảm bảo encoding UTF-8 đúng trước khi base64
                     $ap_content_fixed = $ap['content'] ?? '';
@@ -1768,6 +1803,11 @@ button,input{font-family:inherit;}
                     $ap_content_b64 = base64_encode($ap_content_fixed);
                     // Danh sách ảnh dạng JSON để slider trong modal — dùng double-quote attribute
                     $ap_imgs_json = json_encode($ap_all_imgs, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+=======
+                    $ap_content_b64 = base64_encode($ap['content'] ?? '');
+                    // Danh sách ảnh dạng JSON để slider trong modal
+                    $ap_imgs_json = htmlspecialchars(json_encode($ap_all_imgs, JSON_UNESCAPED_UNICODE));
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
                 ?>
                 <div class="pcard"
                     data-name="<?php echo addslashes($ap_name); ?>"
@@ -1777,7 +1817,11 @@ button,input{font-family:inherit;}
                     data-disc="<?php echo $ap_disc; ?>"
                     data-ico="💻"
                     data-img="<?php echo htmlspecialchars($ap_thumb); ?>"
+<<<<<<< HEAD
                     data-imgs="<?php echo htmlspecialchars($ap_imgs_json, ENT_QUOTES); ?>"
+=======
+                    data-imgs='<?php echo $ap_imgs_json; ?>'
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
                     data-content-b64="<?php echo $ap_content_b64; ?>"
                     data-desc=""
                     data-highlights='[]'
@@ -2739,6 +2783,7 @@ function openAdModal(card){
     let imgs = [];
     try { imgs = JSON.parse(d.imgs || '[]'); } catch(e){}
     if(!imgs.length && d.img) imgs = [d.img];
+<<<<<<< HEAD
     // Lọc bỏ ảnh rỗng
     imgs = imgs.filter(s => s && s.trim() !== '');
 
@@ -2755,6 +2800,12 @@ function openAdModal(card){
         .replace(/\\r\\n/g, '')
         .replace(/\r\n/g, '<br>')
         .replace(/\\\\r\\\\n/g, '');
+=======
+
+    // Giải mã nội dung base64 từ TinyMCE
+    let htmlContent = '';
+    try { htmlContent = atob(d.contentB64 || ''); } catch(e){ htmlContent = ''; }
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
 
     // --- Render modal ---
     document.getElementById('adm-title').textContent = name;
@@ -2771,6 +2822,7 @@ function openAdModal(card){
 
     // Slider ảnh
     const sliderEl = document.getElementById('adm-slider');
+<<<<<<< HEAD
     window._admIdx  = 0;
     window._admImgs = imgs;
     if(imgs.length){
@@ -2782,17 +2834,33 @@ function openAdModal(card){
                      onerror="this.style.display='none';this.parentElement.querySelector('.adm-img-err').style.display='flex';">
                 <div class="adm-img-err" style="display:none;font-size:60px;width:100%;min-height:200px;align-items:center;justify-content:center;">💻</div>
             </div>`).join('');
+=======
+    if(imgs.length){
+        sliderEl.innerHTML = imgs.map((src,i)=>`
+            <div class="adm-slide${i===0?' active':''}" onclick="admZoom('${src}')">
+                <img src="${src}" alt="${name}" onerror="this.src=''" style="max-width:100%;max-height:320px;object-fit:contain;border-radius:10px;cursor:zoom-in;">
+            </div>`).join('');
+        // Dots
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
         document.getElementById('adm-dots').innerHTML = imgs.length>1
             ? imgs.map((_,i)=>`<span class="adm-dot${i===0?' on':''}" onclick="admGoSlide(${i})"></span>`).join('')
             : '';
         document.getElementById('adm-prev').style.display = imgs.length>1?'':'none';
         document.getElementById('adm-next').style.display = imgs.length>1?'':'none';
     } else {
+<<<<<<< HEAD
         sliderEl.innerHTML = '<div style="font-size:80px;text-align:center;padding:40px;width:100%;">💻</div>';
         document.getElementById('adm-dots').innerHTML='';
         document.getElementById('adm-prev').style.display='none';
         document.getElementById('adm-next').style.display='none';
     }
+=======
+        sliderEl.innerHTML = '<div style="font-size:80px;text-align:center;padding:40px">💻</div>';
+        document.getElementById('adm-dots').innerHTML='';
+    }
+    window._admIdx = 0;
+    window._admImgs = imgs;
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
 
     // Nội dung HTML đầy đủ
     document.getElementById('adm-content').innerHTML = htmlContent ||
@@ -2851,7 +2919,11 @@ document.addEventListener('keydown',e=>{
      MODAL: CHI TIẾT SẢN PHẨM ADMIN (ảnh slider + nội dung đầy đủ)
 ====================================================== -->
 <div class="modal-overlay" id="adModal" onclick="modalOverlayClick(event,'adModal')">
+<<<<<<< HEAD
     <div class="modal-box" style="max-width:1100px;max-height:94vh;">
+=======
+    <div class="modal-box" style="max-width:860px;">
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
         <div class="modal-hdr">
             <div class="modal-hdr-icon">🛍️</div>
             <div>
@@ -2860,6 +2932,7 @@ document.addEventListener('keydown',e=>{
             </div>
             <button class="modal-close" onclick="closeModal('adModal')"><i class="fas fa-times"></i></button>
         </div>
+<<<<<<< HEAD
         <div class="modal-body" style="padding:0;overflow-y:auto;flex:1;">
 
             <!-- Layout 2 cột: slider trái, info phải -->
@@ -2916,11 +2989,56 @@ document.addEventListener('keydown',e=>{
                             <div style="font-weight:800;color:var(--g1);font-size:13px;">Hỗ trợ tư vấn miễn phí</div>
                             <div style="color:var(--muted);margin-top:2px;">Hotline: <strong style="color:var(--g2);">0787 911 555</strong> – 8:00 ~ 20:00</div>
                         </div>
+=======
+        <div class="modal-body" style="padding:0;">
+
+            <!-- Layout 2 cột: slider trái, info phải -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;min-height:340px;">
+
+                <!-- CỘT TRÁI: Image slider -->
+                <div style="background:var(--bg);border-right:1px solid var(--border2);padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;position:relative;">
+                    <!-- Slides -->
+                    <div id="adm-slider" style="width:100%;display:flex;align-items:center;justify-content:center;min-height:260px;"></div>
+                    <!-- Prev/Next -->
+                    <button id="adm-prev" onclick="admGoSlide(_admIdx-1)"
+                        style="position:absolute;left:8px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.9);border:none;border-radius:50%;width:34px;height:34px;font-size:16px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);">&#8249;</button>
+                    <button id="adm-next" onclick="admGoSlide(_admIdx+1)"
+                        style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.9);border:none;border-radius:50%;width:34px;height:34px;font-size:16px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);">&#8250;</button>
+                    <!-- Dots -->
+                    <div id="adm-dots" style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;"></div>
+                </div>
+
+                <!-- CỘT PHẢI: Thông tin giá + CTA -->
+                <div style="padding:22px 20px;display:flex;flex-direction:column;justify-content:center;gap:12px;">
+                    <div style="font-size:11px;color:var(--g3);font-weight:800;text-transform:uppercase;letter-spacing:.5px;">✅ Còn hàng • Hàng mới đăng</div>
+                    <div style="font-size:18px;font-weight:900;color:var(--txt);line-height:1.3;" id="adm-name-r"></div>
+                    <div style="background:var(--gll);border-radius:12px;padding:14px 16px;border:1.5px solid var(--border);">
+                        <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;">
+                            <span style="font-size:28px;font-weight:900;color:var(--g2);font-family:'Oswald',sans-serif;" id="adm-price">—</span>
+                            <span style="font-size:14px;color:var(--muted);text-decoration:line-through;" id="adm-old"></span>
+                            <span style="background:var(--red);color:#fff;font-size:11px;font-weight:800;padding:2px 8px;border-radius:8px;" id="adm-disc"></span>
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <button onclick="addAdProductToCart()"
+                            style="flex:1;background:linear-gradient(90deg,var(--g2),var(--g3));color:#fff;border:none;border-radius:10px;padding:12px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:7px;">
+                            <i class="fas fa-cart-plus"></i>Thêm vào giỏ
+                        </button>
+                        <a href="tel:0787911555"
+                            style="background:var(--g1);color:#fff;border-radius:10px;padding:12px 14px;display:flex;align-items:center;justify-content:center;font-size:15px;">
+                            <i class="fas fa-phone-alt"></i>
+                        </a>
+                    </div>
+                    <div style="background:var(--gll);border-radius:9px;padding:10px 13px;font-size:12px;color:var(--g2);font-weight:700;display:flex;align-items:center;gap:8px;">
+                        <i class="fas fa-shield-alt" style="color:var(--g3);"></i>
+                        Bảo hành 12 tháng • Đổi trả 30 ngày
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
                     </div>
                 </div>
             </div>
 
             <!-- Nội dung mô tả đầy đủ từ TinyMCE -->
+<<<<<<< HEAD
             <div style="border-top:2px solid var(--border2);padding:24px 30px;">
                 <div style="font-size:15px;font-weight:800;color:var(--g1);margin-bottom:16px;display:flex;align-items:center;gap:10px;">
                     <span style="width:32px;height:32px;background:var(--gl);border-radius:9px;display:flex;align-items:center;justify-content:center;">
@@ -2930,6 +3048,14 @@ document.addEventListener('keydown',e=>{
                 </div>
                 <div id="adm-content"
                      style="font-size:14px;line-height:1.9;color:var(--txt2);">
+=======
+            <div style="border-top:1px solid var(--border2);padding:20px 24px;">
+                <div style="font-size:14px;font-weight:800;color:var(--g1);margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+                    <i class="fas fa-align-left" style="color:var(--g3);"></i> Mô tả chi tiết sản phẩm
+                </div>
+                <div id="adm-content"
+                     style="font-size:13.5px;line-height:1.8;color:var(--txt2);max-height:400px;overflow-y:auto;">
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
                 </div>
             </div>
 
@@ -2942,6 +3068,7 @@ document.addEventListener('keydown',e=>{
 .adm-slide { display:none; }
 .adm-slide.active { display:flex; align-items:center; justify-content:center; width:100%; }
 .adm-dot { width:8px;height:8px;border-radius:50%;background:var(--border2);cursor:pointer;transition:.2s; }
+<<<<<<< HEAD
 .adm-dot.on { background:var(--g3);width:24px;border-radius:4px; }
 /* Pulse animation */
 @keyframes pulse {
@@ -2988,6 +3115,15 @@ document.addEventListener('keydown',e=>{
     #adModal .modal-box { max-width:100% !important; }
     #adModal .modal-body > div:first-child { grid-template-columns:1fr !important; }
     .adm-slide img { max-height:240px; }
+=======
+.adm-dot.on { background:var(--g3);width:22px;border-radius:4px; }
+/* Full content images responsive */
+#adm-content img { max-width:100%;height:auto;border-radius:8px;margin:8px 0; }
+#adm-content p { margin-bottom:8px; }
+#adm-content ul,#adm-content ol { padding-left:20px;margin-bottom:8px; }
+@media(max-width:600px){
+    #adModal .modal-box > .modal-body > div:first-child { grid-template-columns:1fr; }
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
 }
 </style>
 

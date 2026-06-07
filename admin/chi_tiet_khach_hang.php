@@ -68,6 +68,7 @@ if (($hasRecentOrder || $hasRecentRepair) && !$hasRecentLog) {
     ];
 }
 
+<<<<<<< HEAD
 // ========================
 // LẤY THÔNG BÁO TỪ KTV LIÊN QUAN ĐẾN KHÁCH HÀNG NÀY
 // ========================
@@ -86,6 +87,8 @@ if ($notifRes) {
     }
 }
 
+=======
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
 // 2. KIỂM TRA ĐƠN HÀNG MỚI CHƯA CÓ BẢO HÀNH (cho sản phẩm có bảo hành)
 // Lấy các đơn hàng trong 30 ngày gần đây có sản phẩm cần bảo hành
 $ordersWithoutWarranty = $conn->query("
@@ -416,6 +419,10 @@ $conn->query("CREATE TABLE IF NOT EXISTS `anh_phieu_sua` (
     FOREIGN KEY (`maPhieu`) REFERENCES `phieu_sua_chua`(`maPhieu`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
 
+<<<<<<< HEAD
+=======
+// ── Bảng điều kiện thăng hạng (admin tự chỉnh) ──
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
 $conn->query("CREATE TABLE IF NOT EXISTS `dieu_kien_hang` (
     `maHang`        INT(11) NOT NULL AUTO_INCREMENT,
     `tenHang`       VARCHAR(100) NOT NULL,
@@ -429,6 +436,7 @@ $conn->query("CREATE TABLE IF NOT EXISTS `dieu_kien_hang` (
     PRIMARY KEY (`maHang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
 
+<<<<<<< HEAD
 $conn->query("CREATE TABLE IF NOT EXISTS `thong_bao_admin` (
     `id`          INT AUTO_INCREMENT PRIMARY KEY,
     `maPhieu`     INT NOT NULL,
@@ -441,6 +449,8 @@ $conn->query("CREATE TABLE IF NOT EXISTS `thong_bao_admin` (
     INDEX idx_phieu (`maPhieu`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
 
+=======
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
 // Seed dữ liệu mặc định nếu bảng rỗng
 $ckSeed = $conn->query("SELECT COUNT(*) as c FROM dieu_kien_hang")->fetch_assoc();
 if ((int)$ckSeed['c'] === 0) {
@@ -458,6 +468,7 @@ addColSafe($conn, 'don_hang', 'la_don_laptop', "TINYINT(1) DEFAULT 0 COMMENT '1 
 addColSafe($conn, 'chi_tiet_don_hang', 'maSanPham', 'VARCHAR(50) DEFAULT NULL');
 addColSafe($conn, 'phieu_sua_chua', 'maThietBi', 'INT DEFAULT NULL');
 addColSafe($conn, 'phieu_sua_chua', 'chi_phi_goc', "DOUBLE DEFAULT 0 COMMENT 'Chi phi goc truoc khi ap voucher'");
+<<<<<<< HEAD
 addColSafe($conn, 'phieu_sua_chua', 'kyThuatVien', "VARCHAR(100) DEFAULT NULL COMMENT 'Ten ky thuat vien duoc phan cong'");
 
 // Lấy danh sách kỹ thuật viên từ bảng ky_thuat_vien (nguồn chính)
@@ -531,6 +542,8 @@ if (!empty($dsTech)) {
         }
     }
 }
+=======
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
 
 // Mở rộng cột loaiAnh nếu chưa hỗ trợ giá trị 'loi'
 $colInfo = $conn->query("SHOW COLUMNS FROM `anh_phieu_sua` LIKE 'loaiAnh'")->fetch_assoc();
@@ -645,6 +658,7 @@ $conn->query("INSERT INTO nhat_ky_giao_tiep (maKH, nguoiPhuTrach, hinhThuc, noiD
 
 // Thêm phiếu sửa chữa
 if (isset($_POST['them_phieu_sua'])) {
+<<<<<<< HEAD
     $tenThietBi  = $conn->real_escape_string($_POST['tenThietBi'] ?? '');
     $moTaLoi     = $conn->real_escape_string($_POST['moTaLoi'] ?? '');
     $ngayNhan    = $conn->real_escape_string($_POST['ngayNhan']);
@@ -653,6 +667,15 @@ if (isset($_POST['them_phieu_sua'])) {
     $trangThai   = $conn->real_escape_string($_POST['trangThai']);
     $kyThuatVien = $conn->real_escape_string(trim($_POST['kyThuatVien'] ?? ''));
     $chiPhiGoc   = $chiPhi; // lưu giá gốc trước khi áp voucher
+=======
+    $tenThietBi = $conn->real_escape_string($_POST['tenThietBi'] ?? '');
+    $moTaLoi    = $conn->real_escape_string($_POST['moTaLoi'] ?? '');
+    $ngayNhan   = $conn->real_escape_string($_POST['ngayNhan']);
+    $ngayTra    = !empty($_POST['ngayTra']) ? "'" . $conn->real_escape_string($_POST['ngayTra']) . "'" : 'NULL';
+    $chiPhi     = (double)($_POST['chiPhi'] ?? 0);
+    $trangThai  = $conn->real_escape_string($_POST['trangThai']);
+    $chiPhiGoc  = $chiPhi; // lưu giá gốc trước khi áp voucher
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
     if (!validateDateNotFutureServer($ngayNhan)) {
         $_SESSION['_qa_err'] = 'Ngày nhận sửa chữa không được lớn hơn ngày hiện tại.';
         header("Location: chi_tiet_khach_hang.php?id=$maKH&tab=ky-thuat"); exit();
@@ -686,6 +709,7 @@ if (isset($_POST['them_phieu_sua'])) {
         }
     }
     $moTaLoiEsc = $conn->real_escape_string($moTaLoi);
+<<<<<<< HEAD
     $kyThuatVienSQL = !empty($kyThuatVien) ? "'$kyThuatVien'" : 'NULL';
     $conn->query("INSERT INTO phieu_sua_chua (maKH, tenThietBi, moTaLoi, ngayNhan, ngayTra, chiPhi, chi_phi_goc, trangThai, kyThuatVien)
                   VALUES ($maKH, '$tenThietBi', '$moTaLoiEsc', '$ngayNhan', $ngayTra, $chiPhi, $chiPhiGoc, '$trangThai', $kyThuatVienSQL)");
@@ -717,6 +741,12 @@ if (isset($_POST['them_phieu_sua'])) {
         $stmtNotif->close();
     }
 
+=======
+    $conn->query("INSERT INTO phieu_sua_chua (maKH, tenThietBi, moTaLoi, ngayNhan, ngayTra, chiPhi, chi_phi_goc, trangThai)
+                  VALUES ($maKH, '$tenThietBi', '$moTaLoiEsc', '$ngayNhan', $ngayTra, $chiPhi, $chiPhiGoc, '$trangThai')");
+    $maPhieuMoi = $conn->insert_id;
+
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
     // Lưu ảnh đính kèm upload từ form tạo phiếu (anhThietBi[])
     if ($maPhieuMoi && isset($_FILES['anhThietBi']) && !empty($_FILES['anhThietBi']['name'][0])) {
         $loaiAnh_up  = $conn->real_escape_string($_POST['loaiAnhUpload'] ?? 'truoc');
@@ -741,6 +771,7 @@ if (isset($_POST['them_phieu_sua'])) {
     }
 
     // Tự động thêm nhật ký khi tạo phiếu sửa chữa (ĐẶT TRƯỚC header)
+<<<<<<< HEAD
     $autoLogContent = "🔧 Tạo phiếu sửa chữa #SC-$maPhieuMoi - Thiết bị: $tenThietBi - Tình trạng: $trangThai";
     if (!empty($kyThuatVien)) {
         $autoLogContent .= " - Đã chỉ định KTV: $kyThuatVien";
@@ -750,6 +781,14 @@ if (isset($_POST['them_phieu_sua'])) {
     }
     $conn->query("INSERT INTO nhat_ky_giao_tiep (maKH, nguoiPhuTrach, hinhThuc, noiDung, thoiGian) 
                   VALUES ($maKH, '$admin_user', '🔧 Tạo phiếu sửa chữa', '$autoLogContent', NOW())");
+=======
+$autoLogContent = "🔧 Tạo phiếu sửa chữa #SC-$maPhieuMoi - Thiết bị: $tenThietBi - Tình trạng: $trangThai";
+if (!empty($moTaLoi)) {
+    $autoLogContent .= " - Mô tả: " . substr($moTaLoi, 0, 100);
+}
+$conn->query("INSERT INTO nhat_ky_giao_tiep (maKH, nguoiPhuTrach, hinhThuc, noiDung, thoiGian) 
+              VALUES ($maKH, '$admin_user', '🔧 Tạo phiếu sửa chữa', '$autoLogContent', NOW())");
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
 
     // Tự động kiểm tra & nâng hạng sau khi tạo phiếu sửa
     $rankResult = kiemTraVaNangHang($conn, $maKH, $admin_user);
@@ -871,7 +910,10 @@ if (isset($_POST['sua_nhat_ky'])) {
 }
 
 // Sửa phiếu sửa chữa
+<<<<<<< HEAD
 // Sửa phiếu sửa chữa
+=======
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
 if (isset($_POST['sua_phieu_sua'])) {
     $maPhieu    = (int)$_POST['maPhieu'];
     $tenThietBi = $conn->real_escape_string($_POST['tenThietBi'] ?? '');
@@ -880,6 +922,7 @@ if (isset($_POST['sua_phieu_sua'])) {
     $ngayTra    = !empty($_POST['ngayTra']) ? "'" . $conn->real_escape_string($_POST['ngayTra']) . "'" : 'NULL';
     $chiPhi     = (double)($_POST['chiPhi'] ?? 0);
     $trangThai  = $conn->real_escape_string($_POST['trangThai']);
+<<<<<<< HEAD
     $kyThuatVien = $conn->real_escape_string(trim($_POST['kyThuatVien'] ?? ''));
     
     // Lấy thông tin phiếu cũ để biết KTV cũ là ai
@@ -930,6 +973,9 @@ if (isset($_POST['sua_phieu_sua'])) {
         }
     }
     
+=======
+    $conn->query("UPDATE phieu_sua_chua SET tenThietBi='$tenThietBi', moTaLoi='$moTaLoi', ngayNhan='$ngayNhan', ngayTra=$ngayTra, chiPhi=$chiPhi, trangThai='$trangThai' WHERE maPhieu=$maPhieu");
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
     header("Location: chi_tiet_khach_hang.php?id=$maKH&tab=ky-thuat"); exit();
 }
 
@@ -2013,12 +2059,22 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="sidebar-nav">
         <a href="index.php" class="nav-lnk"><i class="fas fa-th-large"></i><span>Tổng quan</span></a>
         <a href="quan_ly_khach_hang.php" class="nav-lnk active"><i class="fas fa-users"></i><span>Khách hàng</span></a>
+<<<<<<< HEAD
         
+=======
+        <a href="quan_ly_san_pham.php" class="nav-lnk"><i class="fas fa-box-open"></i><span>Sản phẩm</span></a>
+        <a href="quan_ly_don_hang.php" class="nav-lnk"><i class="fas fa-shopping-bag"></i><span>Đơn hàng</span></a>
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
         <a href="don_hang_online.php" class="nav-lnk" id="online-order-link" style="position:relative">
             <i class="fas fa-globe"></i><span>Đơn Online</span>
             <span id="online-order-badge" style="display:none;background:#ef4444;color:#fff;font-size:10px;font-weight:800;padding:1px 6px;border-radius:10px;margin-left:auto;opacity:0;transition:opacity .15s .05s"></span>
         </a>
+<<<<<<< HEAD
         
+=======
+        <a href="quan_ly_bao_hanh.php" class="nav-lnk"><i class="fas fa-shield-alt"></i><span>Bảo hành</span></a>
+        <a href="quan_ly_sua_chua.php" class="nav-lnk"><i class="fas fa-tools"></i><span>Sửa chữa</span></a>
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
     </div>
     <div class="sidebar-footer">
         <a href="../logout.php" class="nav-lnk danger"><i class="fas fa-sign-out-alt"></i><span>Đăng xuất</span></a>
@@ -2871,7 +2927,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 <table class="tbl" id="tblSuaChua">
                     <thead><tr>
                         <th>Mã phiếu</th><th>Thiết bị</th><th>Ngày nhận</th>
+<<<<<<< HEAD
                         <th>Ngày trả</th><th>Chi phí</th><th>KTV phụ trách</th><th>Trạng thái</th><th class="text-center">Tác vụ</th>
+=======
+                        <th>Ngày trả</th><th>Chi phí</th><th>Trạng thái</th><th class="text-center">Tác vụ</th>
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
                     </tr></thead>
                     <tbody>
                     <?php while ($ps = $phieu_sua->fetch_assoc()):
@@ -2893,6 +2953,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <td><?= date('d/m/Y', strtotime($ps['ngayNhan'])) ?></td>
                         <td><?= $ps['ngayTra'] ? date('d/m/Y', strtotime($ps['ngayTra'])) : '<span class="text-muted">—</span>' ?></td>
                         <td style="font-weight:700;<?= $ps['chiPhi']>0?'color:var(--c-danger);':'' ?>"><?= $ps['chiPhi']>0 ? number_format($ps['chiPhi'],0,',','.').' đ' : '—' ?></td>
+<<<<<<< HEAD
                         <td>
                             <?php if (!empty($ps['kyThuatVien'])): ?>
                                 <div style="display:flex;align-items:center;gap:6px;">
@@ -2910,6 +2971,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </button>
                             <?php endif; ?>
                         </td>
+=======
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
                         <td><span class="chip <?= $ts_chip ?>"><?= htmlspecialchars($ps['trangThai']) ?></span></td>
                         <td>
                             <div class="d-flex gap-1 justify-content-center">
@@ -3123,6 +3186,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                                     <span>Hạng KH</span>
                                                     <strong><?= htmlspecialchars($khach_hang['loaiKhachHang']) ?></strong>
                                                 </div>
+<<<<<<< HEAD
                                                 <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
                                                     <span>Số ảnh</span>
                                                     <strong><?= count($anhArr) ?> ảnh</strong>
@@ -3139,6 +3203,12 @@ document.addEventListener('DOMContentLoaded', function() {
                                                     <span style="color:#f59e0b;font-weight:600;font-size:11px;">⚠ Chưa phân công</span>
                                                     <?php endif; ?>
                                                 </div>
+=======
+                                                <div style="display:flex;justify-content:space-between;">
+                                                    <span>Số ảnh</span>
+                                                    <strong><?= count($anhArr) ?> ảnh</strong>
+                                                </div>
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
                                             </div>
                                         </div>
                                     </div>
@@ -3218,6 +3288,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                                 <label class="form-label fw-semibold" style="font-size:13px;">Mô tả lỗi / Ghi chú kỹ thuật</label>
                                                 <textarea name="moTaLoi" class="form-control" rows="4" style="font-size:13px;resize:vertical;"><?= htmlspecialchars($ps['moTaLoi'] ?? '') ?></textarea>
                                             </div>
+<<<<<<< HEAD
                                             <!-- Chỉ định kỹ thuật viên -->
                                             <div class="col-12">
                                                 <label style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8;display:flex;align-items:center;gap:6px;margin-bottom:10px;">
@@ -3285,6 +3356,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                                 </div>
                                                 <?php endif; ?>
                                             </div>
+=======
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
                                         </div>
                                     </div>
                                     <div class="modal-footer" style="background:#f8fafc;border-top:1px solid #e2e8f0;padding:12px 24px;">
@@ -3381,6 +3454,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                             <td style="padding:9px 12px;font-weight:600;color:#64748b;border-bottom:1px solid #e2e8f0;">Trạng thái</td>
                                             <td style="padding:9px 12px;border-bottom:1px solid #e2e8f0;"><strong><?= htmlspecialchars($ps['trangThai']) ?></strong></td>
                                         </tr>
+<<<<<<< HEAD
                                         <tr>
                                             <td style="padding:9px 12px;font-weight:600;color:#64748b;border-bottom:1px solid #e2e8f0;">Kỹ thuật viên phụ trách</td>
                                             <td style="padding:9px 12px;border-bottom:1px solid #e2e8f0;">
@@ -3394,6 +3468,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                                 <?php endif; ?>
                                             </td>
                                         </tr>
+=======
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
                                         <?php if (isset($ps['chi_phi_goc']) && $ps['chi_phi_goc'] > 0 && $ps['chi_phi_goc'] != $ps['chiPhi']): ?>
                                         <tr>
                                             <td style="padding:9px 12px;font-weight:600;color:#64748b;border-bottom:1px solid #e2e8f0;">Chi phí gốc</td>
@@ -3438,6 +3514,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <div style="text-align:center;border:1px dashed #e2e8f0;border-radius:10px;padding:20px 10px 12px;">
                                             <div style="height:50px;"></div>
                                             <div style="height:1px;background:#e2e8f0;margin-bottom:6px;"></div>
+<<<<<<< HEAD
                                             <div style="font-size:12px;font-weight:700;color:#374151;">Kỹ thuật viên phụ trách</div>
                                             <div style="font-size:11px;font-weight:600;color:#1e40af;margin-top:2px;">
                                                 <?php if (!empty($ps['kyThuatVien'])): ?>
@@ -3446,6 +3523,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                                     <span style="color:#94a3b8;font-weight:400;font-style:italic;">Chưa phân công</span>
                                                 <?php endif; ?>
                                             </div>
+=======
+                                            <div style="font-size:12px;font-weight:700;color:#374151;">Kỹ thuật viên</div>
+                                            <div style="font-size:11px;color:#94a3b8;margin-top:2px;"><?= htmlspecialchars($admin_user) ?></div>
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
                                         </div>
                                     </div>
                                 </div>
@@ -5324,6 +5405,7 @@ function xemVoucher(v) {
                                     placeholder="VD: Màn hình vỡ góc trên bên phải...">
                             </div>
 
+<<<<<<< HEAD
                             <!-- ── Chỉ định kỹ thuật viên ── -->
                             <div class="ps-section-label" style="margin-top:18px;"><i class="fas fa-user-cog"></i> Chỉ định kỹ thuật viên</div>
                             <?php if (!empty($dsTech)): ?>
@@ -5380,6 +5462,8 @@ function xemVoucher(v) {
                             </div>
                             <?php endif; ?>
 
+=======
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
                             <!-- Tips -->
                             <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px;margin-top:16px;">
                                 <div style="font-size:11px;font-weight:700;color:#64748b;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em;">💡 Gợi ý chụp ảnh</div>
@@ -5498,6 +5582,7 @@ document.getElementById('addPSModal').addEventListener('hidden.bs.modal', functi
     document.getElementById('psImgCount').textContent = '';
     document.getElementById('psFooterInfo').innerHTML = '<i class="fas fa-info-circle me-1"></i> Ảnh sẽ được lưu vào hồ sơ phiếu sau khi tạo.';
 });
+<<<<<<< HEAD
 
 /* ── KTV picker (tạo mới phiếu) ── */
 document.addEventListener('DOMContentLoaded', function () {
@@ -5535,6 +5620,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+=======
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
 </script>
 
 <!-- Modal thêm bảo hành -->
@@ -6979,4 +7066,8 @@ window.addEventListener('DOMContentLoaded', () => {
 })();
 </script>
 </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d

@@ -201,6 +201,7 @@ $incompleteRes = $conn->query(
 $incompleteList = [];
 while ($ic = $incompleteRes->fetch_assoc()) $incompleteList[] = $ic;
 
+<<<<<<< HEAD
 // Thêm vào sau phần lấy dữ liệu sinh nhật (khoảng dòng 180-200)
 
 // ========================
@@ -221,6 +222,8 @@ if ($notifRes) {
     }
 }
 
+=======
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
 // Helper: avatar color từ tên
 function avatarColor($name) {
     $colors = [
@@ -319,6 +322,7 @@ body { font-family:'Sora',sans-serif; background:var(--bg); color:var(--text); d
     border-radius: 99px;
     font-weight: 600;
 }
+<<<<<<< HEAD
 /* ── NOTIFICATION BELL ADMIN ── */
 .notif-bell-admin {
     position: relative;
@@ -446,6 +450,8 @@ body { font-family:'Sora',sans-serif; background:var(--bg); color:var(--text); d
     background: #2563eb;
     color: #fff;
 }
+=======
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
 
 /* ── LAYOUT: STATS + CHART ── */
 .dashboard-row { display:grid; grid-template-columns:1fr 320px; gap:16px; margin-bottom:20px; }
@@ -629,16 +635,31 @@ tbody td { padding:14px 16px; vertical-align:middle; color:#111827; }
     </div>
     <nav class="sb-nav">
         <div class="nav-sec">Tổng Quan</div>
+<<<<<<< HEAD
         <a href="index.php" class="nav-a"><i class="fas fa-th-large"></i> Trang chủ</a>
         <div class="nav-sec">Quản Lý</div>
         <a href="quan_ly_khach_hang.php" class="nav-a active"><i class="fas fa-users"></i> Khách Hàng</a>
         
+=======
+        <a href="index.php" class="nav-a"><i class="fas fa-th-large"></i> Dashboard</a>
+        <div class="nav-sec">Quản Lý</div>
+        <a href="quan_ly_khach_hang.php" class="nav-a active"><i class="fas fa-users"></i> Khách Hàng</a>
+        <a href="don_hang.php" class="nav-a"><i class="fas fa-box-open"></i> Đơn Hàng</a>
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
         <a href="don_hang_online.php" class="nav-a" id="online-order-link" style="position:relative">
             <i class="fas fa-shopping-bag"></i> Đơn Online
             <span id="online-order-badge" style="display:none;background:#ef4444;color:#fff;font-size:10px;font-weight:800;padding:1px 6px;border-radius:10px;margin-left:auto"></span>
         </a>
+<<<<<<< HEAD
         
         
+=======
+        <a href="sua_chua.php" class="nav-a"><i class="fas fa-tools"></i> Sửa Chữa</a>
+        <a href="san_pham.php" class="nav-a"><i class="fas fa-laptop"></i> Sản Phẩm</a>
+        <div class="nav-sec">Hệ Thống</div>
+        <a href="bao_cao.php" class="nav-a"><i class="fas fa-chart-pie"></i> Báo Cáo</a>
+        <a href="cai_dat.php" class="nav-a"><i class="fas fa-cog"></i> Cài Đặt</a>
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
     </nav>
     <div class="sb-foot">
         <a href="../logout.php" class="nav-a" style="color:#ef4444;"><i class="fas fa-power-off"></i> Đăng Xuất</a>
@@ -799,6 +820,7 @@ tbody td { padding:14px 16px; vertical-align:middle; color:#111827; }
         <h1>Quản Lý Khách Hàng</h1>
         <p>Theo dõi vòng đời và hành trình khách hàng — QA Tech</p>
     </div>
+<<<<<<< HEAD
     <div class="top-actions">
     <div class="notif-bell-admin" id="adminBellBtn" onclick="toggleAdminNotifPanel()">
         <i class="fas fa-bell"></i> Thông báo
@@ -920,6 +942,9 @@ function markNotifRead(id) {
 }
 </script>
 <?php endif; ?>
+=======
+</div>
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
 
 <!-- ── STATS + CHART ── -->
 <div class="dashboard-row">
@@ -1442,6 +1467,7 @@ function confirmDelete(url, name) {
     setInterval(check, 30000);
 })();
 </script>
+<<<<<<< HEAD
 <!-- Panel thông báo admin -->
 <div class="notif-panel-admin" id="adminNotifPanel">
     <div class="notif-header-admin">
@@ -1570,5 +1596,7 @@ setInterval(() => {
 // Khởi tạo badge khi load trang
 updateAdminBadge();
 </script>
+=======
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
 </body>
 </html>

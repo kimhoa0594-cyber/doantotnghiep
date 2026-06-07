@@ -321,6 +321,7 @@ if (isset($_GET['del'])) {
         header("Location: users.php?msg_quick=" . urlencode("Không thể xóa tài khoản của chính bạn!") . "&msg_type=danger");
         exit();
     }
+<<<<<<< HEAD
 
     // Lấy email + role trước khi xóa để xóa các bảng liên quan
     $info = $conn->prepare("SELECT email, role FROM users WHERE id = ?");
@@ -359,6 +360,8 @@ if (isset($_GET['del'])) {
     }
 
     // Xóa khỏi bảng users
+=======
+>>>>>>> fc0888887465ac6d64caa80abe4294c237f2aa7d
     $stmt = $conn->prepare("DELETE FROM users WHERE id = ?");
     $stmt->bind_param("i", $del_id);
     if ($stmt->execute()) {
